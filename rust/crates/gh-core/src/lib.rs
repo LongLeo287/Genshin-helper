@@ -7,6 +7,7 @@ pub mod assets;
 pub mod atomic_io;
 pub mod config;
 pub mod frame;
+pub mod game_profile;
 pub mod i18n;
 pub mod map_bridge;
 pub mod multimap;

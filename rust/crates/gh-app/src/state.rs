@@ -55,7 +55,9 @@ use std::sync::{Arc, Mutex, RwLock};
 use std::time::{Instant, SystemTime};
 use tokio::sync::watch;
 
-pub const WINDOW_TITLES: [&str; 2] = ["Genshin Impact", "原神"];
+/// HSR-only target window list.  Genshin titles are deliberately not included:
+/// this fork must never attach the HSR tracker to the wrong game process.
+pub const WINDOW_TITLES: [&str; 3] = gh_core::game_profile::HSR_WINDOW_TITLES;
 pub const NAV_MARK_CONFIRM_DIST_M: f64 = 25.0;
 
 #[derive(Debug, Clone, Default)]

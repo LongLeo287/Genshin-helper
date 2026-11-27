@@ -74,7 +74,7 @@ use windows::core::{PCWSTR, w};
 #[command(
     name = "GenshinHelper",
     version = APP_VERSION,
-    about = "Genshin Impact Exploration & HoYoLAB Auto-Sync Tool"
+    about = "Honkai: Star Rail passive map companion"
 )]
 pub struct CliArgs {
     /// Disable Windows System Tray icon

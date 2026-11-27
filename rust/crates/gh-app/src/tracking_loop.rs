@@ -652,8 +652,19 @@ impl Drop for TrackingWorker {
 }
 
 pub async fn run_tracking_loop(state: Arc<AppState>, mut shutdown_rx: watch::Receiver<bool>) {
+    if !gh_core::game_profile::HSR_MINIMAP_TRACKING_SUPPORTED {
+        tracing::warn!(
+            "HSR visual tracking is fail-closed: the Genshin/Teyvat calibration is not used until an HSR-specific calibration is installed"
+        );
+        while state.server.is_running() && !*shutdown_rx.borrow() {
+            if sleep_or_shutdown(Duration::from_secs(1), &mut shutdown_rx).await {
+                break;
+            }
+        }
+        return;
+    }
     tracing::info!(
-        "Tracking loop running (v5.4 Hybrid Minimap + 3-Anchor Map M FSM). Waiting for Genshin Impact window..."
+        "Tracking loop running (HSR visual adapter). Waiting for Honkai: Star Rail window..."
     );
 
     let worker = TrackingWorker::spawn();
@@ -759,7 +770,7 @@ pub async fn run_tracking_loop(state: Arc<AppState>, mut shutdown_rx: watch::Rec
 
         let Some((hwnd, left, top, width, height)) = win_info else {
             if window_attached {
-                tracing::warn!("Genshin Impact window lost. Waiting for window...");
+                tracing::warn!("Honkai: Star Rail window lost. Waiting for window...");
                 window_attached = false;
                 {
                     let mut gs = state.game_state.lock().unwrap_or_else(|e| e.into_inner());
@@ -839,7 +850,7 @@ pub async fn run_tracking_loop(state: Arc<AppState>, mut shutdown_rx: watch::Rec
         }
 
         if !window_attached || last_res != Some((width, height)) {
-            tracing::info!("Attached to Genshin Impact window ({width}x{height})");
+            tracing::info!("Attached to Honkai: Star Rail window ({width}x{height})");
             window_attached = true;
             last_res = Some((width, height));
         }

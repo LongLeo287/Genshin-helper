@@ -6,6 +6,7 @@
 
 pub mod hd_assets;
 pub mod hoyolab_sync;
+pub mod hsr_map;
 pub mod lan_companion;
 pub mod pin_guide;
 pub mod sync_server;
